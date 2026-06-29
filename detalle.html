@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Piloto de Pista — Apex</title>
+  <meta name="description" content="Detalle del curso Piloto de Pista de Apex: entrenamientos, telemetría y feedback para bajar tus tiempos." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="hud-frame" aria-hidden="true">
+    <span class="hud-corner hud-corner--tl"></span>
+    <span class="hud-corner hud-corner--tr"></span>
+    <span class="hud-corner hud-corner--bl"></span>
+    <span class="hud-corner hud-corner--br"></span>
+  </div>
+
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+  <header class="navbar" id="navbar">
+    <div class="navbar__inner container">
+      <a href="#hero" class="logo" aria-label="Apex — Curso Piloto de Pista">
+        <span class="logo__mark" aria-hidden="true">◢</span>
+        <img src="assets/img/marca.svg" alt="Apex" class="logo__icon">
+        <span class="logo__tag">SIM-RACING ACADEMY</span>
+      </a>
+
+      <nav class="nav-desktop" aria-label="Navegación principal">
+        <a href="#introduccion">Introducción</a>
+        <a href="#expectativas">Qué esperás</a>
+        <a href="#modulos">Módulos</a>
+        <a href="#resultados">Resultados</a>
+        <a href="#otros-cursos">Otros cursos</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+
+      <div class="navbar__actions">
+        <a href="#contacto" class="btn btn--primary btn--small nav-cta">Inscribirme</a>
+        <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navMobile">
+          <span class="nav-toggle__bar"></span>
+          <span class="nav-toggle__bar"></span>
+          <span class="nav-toggle__bar"></span>
+        </button>
+      </div>
+    </div>
+
+    <nav class="nav-mobile" id="navMobile" aria-label="Navegación mobile">
+      <a href="#introduccion">01 — Introducción</a>
+      <a href="#expectativas">02 — Qué esperás</a>
+      <a href="#modulos">03 — Módulos</a>
+      <a href="#resultados">04 — Resultados</a>
+      <a href="#otros-cursos">05 — Otros cursos</a>
+      <a href="#contacto">06 — Contacto</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+
+    <section id="hero" class="hero">
+      <div class="hero__bg" aria-hidden="true">
+        <img src="assets/img/piloto-pista-hero.jpg" alt="" class="hero__image">
+      </div>
+
+      <div class="container">
+        <div class="hero__content reveal">
+          <p class="eyebrow">Piloto de Pista</p>
+          <h1 class="hero__title">
+            <span>Bajá tus tiempos</span>
+            <span class="text-soft">con feedback constante</span>
+          </h1>
+          
+
+          <div class="hero__actions">
+            <a href="#contacto" class="btn btn--primary btn--laser"><span>Inscribirme</span></a>
+            <a href="#contacto" class="btn btn--ghost"><span>Consultar</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="introduccion" class="section">
+      <div class="container">
+        <header class="section__header reveal">
+          <p class="eyebrow">Introducción</p>
+          <h2 class="section__title">Convertí cada vuelta en una <span class="text-soft">oportunidad para mejorar</span>.</h2>
+        </header>
+
+        <div class="manifesto__grid">
+          <article class="manifesto__col reveal">
+            <p>
+              No importa si recién empezás o si ya competís online. <strong class="text-ultra-bold">Este curso está pensado para comprender qué hace realmente rápido a un piloto.</strong> Vas a recibir análisis personalizados, correcciones en tiempo real y ejercicios específicos para eliminar errores y desarrollar una conducción consistente.
+            </p>
+        
+          
+          </article>
+
+          <div class="img-frame reveal is-loaded">
+          
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="expectativas" class="beneficios section" aria-label="Qué podés esperar">
+      <div class="container">
+        <header class="section__header reveal">
+          <p class="eyebrow">Qué podés esperar del curso</p>
+          <h2 class="section__title">Todo lo necesario para elevar tu rendimiento.</h2>
+        </header>
+      </div>
+
+      <ul class="beneficios__track" role="list">
+        <li class="beneficios__card reveal">
+          <div class="beneficios__icon-wrap" aria-hidden="true">
+            <i data-lucide="check-circle" width="150" height="150"></i>
+          </div>
+          <h3 class="beneficios__card-title">Aprendizaje práctico</h3>
+          <p class="beneficios__card-text">Clases enfocadas en ejercicios que se trasladan directo al tiempo por vuelta.</p>
+        </li>
+        <li class="beneficios__card reveal">
+          <div class="beneficios__icon-wrap" aria-hidden="true">
+            <i data-lucide="sliders" width="150" height="150"></i>
+          </div>
+          <h3 class="beneficios__card-title">Feedback personalizado</h3>
+          <p class="beneficios__card-text">Correcciones en tiempo real basadas en tu estilo y tu trazada.</p>
+        </li>
+        <li class="beneficios__card reveal">
+          <div class="beneficios__icon-wrap" aria-hidden="true">
+            <i data-lucide="clock" width="150" height="150"></i>
+          </div>
+          <h3 class="beneficios__card-title">Técnicas profesionales</h3>
+          <p class="beneficios__card-text">Metodología adaptada a pilotos competitivos, no a sesiones casuales.</p>
+        </li>
+        <li class="beneficios__card reveal">
+          <div class="beneficios__icon-wrap" aria-hidden="true">
+            <i data-lucide="file-text" width="150" height="150"></i>
+          </div>
+          <h3 class="beneficios__card-title">Seguimiento continuo</h3>
+          <p class="beneficios__card-text">Tu progreso queda registrado y se ajusta cada semana para no estancarte.</p>
+        </li>
+        <li class="beneficios__card reveal">
+          <div class="beneficios__icon-wrap" aria-hidden="true">
+            <i data-lucide="github" width="150" height="150"></i>
+          </div>
+          <h3 class="beneficios__card-title">Material complementario</h3>
+          <p class="beneficios__card-text">Guías, análisis de vueltas y ejercicios para practicar fuera de clase.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section id="modulos" class="programs section">
+      <div class="container">
+        <header class="section__header reveal">
+          <p class="eyebrow">Módulos</p>
+          <h2 class="section__title">Lo que vamos a trabajar en cada etapa.</h2>
+          <p class="section__lead">Cinco módulos diseñados para construir velocidad, consistencia y control a lo largo de la pista.</p>
+        </header>
+
+        <div class="programs__grid programs__carousel">
+          <article class="plan-card reveal">
+            <p class="plan-card__code">MÓD / 01</p>
+            <h3>Fundamentos de conducción</h3>
+            <p class="plan-card__desc">Base técnica sobre frenada, tracción y trazada correcta.</p>
+            <div class="plan-card__media">
+              <div class="img-frame" data-label="REEMPLAZAR: modulo-fundamentos.jpg"></div>
+            </div>
+          </article>
+
+          <article class="plan-card reveal">
+            <p class="plan-card__code">MÓD / 02</p>
+            <h3>Técnicas de pilotaje</h3>
+            <p class="plan-card__desc">Tácticas avanzadas para uso del freno, acelerador y cambios de ritmo.</p>
+            <div class="plan-card__media">
+              <div class="img-frame" data-label="REEMPLAZAR: modulo-tecnicas.jpg"></div>
+            </div>
+          </article>
+
+          <article class="plan-card reveal">
+            <p class="plan-card__code">MÓD / 03</p>
+            <h3>Consistencia</h3>
+            <p class="plan-card__desc">Ejercicios para repetir vueltas rápidas sin picos de errores.</p>
+            <div class="plan-card__media">
+              <div class="img-frame" data-label="REEMPLAZAR: modulo-consistencia.jpg"></div>
+            </div>
+          </article>
+
+          <article class="plan-card reveal">
+            <p class="plan-card__code">MÓD / 04</p>
+            <h3>Telemetría</h3>
+            <p class="plan-card__desc">Interpretación de datos para encontrar tus márgenes de mejora.</p>
+            <div class="plan-card__media">
+              <div class="img-frame" data-label="REEMPLAZAR: modulo-telemetria.jpg"></div>
+            </div>
+          </article>
+
+          <article class="plan-card reveal">
+            <p class="plan-card__code">MÓD / 05</p>
+            <h3>Simulación de carrera</h3>
+            <p class="plan-card__desc">Trabajo de ritmo, temperaturas y manejo de presión de carrera.</p>
+            <div class="plan-card__media">
+              <div class="img-frame" data-label="REEMPLAZAR: modulo-carrera.jpg"></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="resultados" class="section">
+   <div class="container">
+  <header class="section__header reveal">
+    <p class="eyebrow">Resultados</p>
+    <h2 class="section__title">Los números que respaldan el método.</h2>
+    <p class="section__lead">Estadísticas reales de pilotos que ya bajaron sus tiempos con el curso.</p>
+  </header>
+
+  <div class="resultados__stats reveal">
+    <div class="resultados__stat">
+      <span class="resultados__num">+1.8 s</span>
+      <span class="resultados__label">Promedio de mejora por vuelta en pilotos que completaron el programa.</span>
+    </div>
+    <div class="resultados__stat">
+      <span class="resultados__num">92%</span>
+      <span class="resultados__label">Porcentaje de alumnos que mejoró su consistencia después de 4 semanas.</span>
+    </div>
+    <div class="resultados__stat">
+      <span class="resultados__num">+250</span>
+      <span class="resultados__label">Pilotos entrenados con feedback individual y datos reales.</span>
+    </div>
+  </div>
+</div>
+    </section>
+
+    <section id="otros-cursos" class="programs section">
+      <div class="container">
+        <header class="section__header reveal">
+          <p class="eyebrow">Otros cursos</p>
+          <h2 class="section__title">Extendé tu entrenamiento con estas opciones.</h2>
+          <p class="section__lead">Complementos ideales para seguir subiendo el nivel después de Piloto de Pista.</p>
+        </header>
+
+        <div class="programs__grid programs__otros">
+          <article class="plan-card reveal">
+            <p class="plan-card__code">APX / SET</p>
+            <h3>Setup Profesional</h3>
+            <p class="plan-card__desc">Ajustá tu simulador y tu auto virtual para exprimir cada curva.</p>
+            <div class="plan-card__media">
+              <div class="img-frame is-loaded" data-label="REEMPLAZAR: curso-setup.jpg">
+  <img src="assets/img/curso-setup.png" alt="Setup Profesional">
+</div>
+            </div>
+            <a href="#contacto" class="btn btn--ghost">Ver más</a>
+          </article>
+          <article class="plan-card reveal">
+            <p class="plan-card__code">APX / TEL</p>
+            <h3>Telemetría Avanzada</h3>
+            <p class="plan-card__desc">Aprendé a leer datos complejos para detectar décimas ocultas.</p>
+            <div class="plan-card__media">
+              <div class="img-frame is-loaded" data-label="REEMPLAZAR: curso-telemetria.jpg">
+  <img src="assets/img/curso-analisis.png" alt="Telemetría Avanzada">
+</div>
+            </div>
+            <a href="#contacto" class="btn btn--ghost">Ver más</a>
+          </article>
+          <article class="plan-card reveal">
+            <p class="plan-card__code">APX / COA</p>
+            <h3>Coaching Personalizado</h3>
+            <p class="plan-card__desc">Mentoría uno a uno para mejorar tu estilo, tus mentalidad y tus sesiones.</p>
+            <div class="plan-card__media">
+              <div class="img-frame is-loaded" data-label="REEMPLAZAR: curso-coaching.jpg">
+  <img src="assets/img/curso-coaching.png" alt="Coaching Personalizado">
+</div>
+            </div>
+            <a href="#contacto" class="btn btn--ghost">Ver más</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contacto" class="apply section">
+      <div class="container">
+        <div class="apply__inner">
+          <div class="apply__details reveal">
+            <header class="section__header" style="margin-bottom: 1.25rem;">
+              <p class="eyebrow">¿Listo para bajar tus tiempos?</p>
+              <h2 class="section__title">Consultá sobre tu cupo y modalidad.</h2>
+            </header>
+            <p class="section__lead">Modalidad online, clases flexibles y cupos limitados. Respondemos rápido para asegurar tu primera clase.</p>
+
+            <ul class="apply__bullets">
+              <li><i data-lucide="check-circle" aria-hidden="true"></i> Clases individuales o en grupos reducidos</li>
+              <li><i data-lucide="check-circle" aria-hidden="true"></i> Análisis de tu telemetría en cada sesión</li>
+              <li><i data-lucide="check-circle" aria-hidden="true"></i> Acceso a material de apoyo y grabaciones</li>
+            </ul>
+
+            <div class="img-frame" data-label="REEMPLAZAR: cockpit-premium.jpg" style="margin-top:1.5rem;"></div>
+          </div>
+
+          <form id="applyForm" class="apply__form reveal">
+            <div class="form-row form-row--split">
+              <label for="firstName">Nombre</label>
+              <input type="text" id="firstName" name="firstName" placeholder="Nombre" required>
+            </div>
+            <div class="form-row form-row--split">
+              <label for="lastName">Apellido</label>
+              <input type="text" id="lastName" name="lastName" placeholder="Apellido" required>
+            </div>
+            <div class="form-row">
+              <label for="email">Correo</label>
+              <input type="email" id="email" name="email" placeholder="tu@correo.com" required>
+            </div>
+            <div class="form-row">
+              <label for="message">Mensaje</label>
+              <textarea id="message" name="message" placeholder="Contame qué querés mejorar" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn--primary btn--full">Enviar mensaje</button>
+            <p id="applySuccess" class="apply__success" hidden>Gracias por tu consulta. Nos comunicamos a la brevedad.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <div class="site-footer__brand">
+        <p>Apex — Academia de Sim-Racing de Élite.</p>
+      </div>
+      <div class="site-footer__legal">
+        <p class="mono">© 2026 Apex</p>
+        <p class="mono">Todos los derechos reservados</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

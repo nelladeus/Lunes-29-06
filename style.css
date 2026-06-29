@@ -1,0 +1,2689 @@
+/* ================================================================
+   APEX — SIM-RACING ACADEMY
+   Hoja de estilos principal.
+   Enfoque: MOBILE-FIRST. Los estilos base son para pantallas
+   chicas y se van ampliando con @media (min-width: ...) hacia
+   tablet y desktop.
+================================================================ */
+
+
+/* ----------------------------------------------------------------
+   1. VARIABLES GLOBALES (Design Tokens)
+   Paleta estricta pedida en el brief + escalas reutilizables.
+---------------------------------------------------------------- */
+:root {
+  /* Colores de marca */
+  --color-bg: #0e0b18;
+  /* Fondo principal: negro absoluto */
+  --color-primary: #31309b;
+  /* Azul eléctrico / principal */
+  --color-accent: #5555d2;
+  /* Azul de acento */
+  --color-line: #8080e3;
+  /* Líneas / detalles de blueprint */
+  --color-soft: #fda5eb;
+  /* Tono suave para destacados puntuales */
+  --color-text: #f2ecdb;
+  /* Texto claro principal */
+
+  /* Variantes con transparencia, útiles para fondos/bordes sutiles */
+  --color-line-15: rgba(128, 128, 227, 0.15);
+  --color-line-30: rgba(128, 128, 227, 0.3);
+  --color-accent-25: rgba(85, 85, 210, 0.25);
+  --color-primary-40: rgba(49, 48, 155, 0.4);
+  --color-text-60: rgba(242, 236, 219, 0.6);
+  --color-text-40: rgba(242, 236, 219, 0.4);
+
+  /* Tipografías */
+  --font-display: 'Space Grotesk', 'Arial Narrow', sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  /* Layout */
+  --container-w: 1200px;
+  --gap: 1.25rem;
+  --radius: 2px;
+  /* radios casi nulos: estética técnica / blueprint, no "app friendly" */
+
+  /* Velocidades de animación */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+
+/* ----------------------------------------------------------------
+   2. RESET BÁSICO
+---------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body,
+h1,
+h2,
+h3,
+p,
+ul,
+dl,
+dd,
+figure,
+blockquote {
+  margin: 0;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  /* evita scroll horizontal por elementos decorativos */
+}
+
+/* Foco visible para navegación por teclado (accesibilidad) */
+:focus-visible {
+  outline: 2px solid var(--color-soft);
+  outline-offset: 3px;
+}
+
+/* Respeta la preferencia de "movimiento reducido" del sistema operativo */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Link "saltar al contenido" — solo visible al enfocarlo con teclado */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  background: var(--color-accent);
+  color: var(--color-text);
+  padding: 0.6rem 1rem;
+  z-index: 999;
+  transition: top 0.2s var(--ease);
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+
+/* ----------------------------------------------------------------
+   3. UTILIDADES DE LAYOUT
+---------------------------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: var(--container-w);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+.section {
+  padding-block: 4.5rem;
+  position: relative;
+}
+
+.text-accent {
+  color: var(--color-accent);
+}
+
+.text-soft {
+  color: var(--color-soft);
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+/* "Eyebrow": etiqueta pequeña tipo dato técnico encima de cada título */
+.eyebrow {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.7rem;
+  color: var(--color-soft);
+  margin-bottom: 0.75rem;
+}
+
+.eyebrow::before {
+  content: "// ";
+  color: var(--color-line);
+}
+
+.section__header {
+  max-width: 640px;
+  margin-bottom: 2.5rem;
+}
+
+.section__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.75rem, 5vw, 2.75rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin-bottom: 1rem;
+}
+
+.section__lead {
+  color: var(--color-text-60);
+  font-size: 1.05rem;
+  max-width: 52ch;
+}
+
+
+/* ----------------------------------------------------------------
+   4. ANIMACIONES DE ENTRADA AL SCROLL ("reveal")
+   Clase añadida en HTML; script.js agrega ".is-visible" cuando
+   el elemento entra en el viewport (IntersectionObserver).
+---------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ----------------------------------------------------------------
+   5. HUD FRAME (marco de esquinas fijo, estética de carrera)
+---------------------------------------------------------------- */
+.hud-frame {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+}
+
+.hud-corner {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--color-line-30);
+}
+
+.hud-corner--tl {
+  top: 10px;
+  left: 10px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.hud-corner--tr {
+  top: 10px;
+  right: 10px;
+  border-left: none;
+  border-bottom: none;
+}
+
+.hud-corner--bl {
+  bottom: 10px;
+  left: 10px;
+  border-right: none;
+  border-top: none;
+}
+
+.hud-corner--br {
+  bottom: 10px;
+  right: 10px;
+  border-left: none;
+  border-top: none;
+}
+
+@media (min-width: 768px) {
+  .hud-corner {
+    width: 26px;
+    height: 26px;
+  }
+
+  .hud-corner--tl,
+  .hud-corner--tr {
+    top: 16px;
+  }
+
+  .hud-corner--bl,
+  .hud-corner--br {
+    bottom: 16px;
+  }
+
+  .hud-corner--tl,
+  .hud-corner--bl {
+    left: 16px;
+  }
+
+  .hud-corner--tr,
+  .hud-corner--br {
+    right: 16px;
+  }
+}
+
+
+/* ----------------------------------------------------------------
+   6. GRID DE BLUEPRINT (fondo técnico reutilizable)
+---------------------------------------------------------------- */
+.blueprint-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--color-line-15) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-line-15) 1px, transparent 1px);
+  background-size: 36px 36px;
+  /* Se desvanece hacia abajo para no competir con el texto */
+  -webkit-mask-image: linear-gradient(to bottom, black, transparent 85%);
+  mask-image: linear-gradient(to bottom, black, transparent 85%);
+  opacity: 0.6;
+}
+
+.blueprint-grid--dense {
+  background-size: 22px 22px;
+  opacity: 0.35;
+}
+
+/* Anotaciones de coordenadas decorativas */
+.coord {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  color: var(--color-text-40);
+  z-index: 1;
+  display: none;
+  /* ocultas en mobile por defecto */
+}
+
+.coord--tl {
+  display: block;
+  top: 1rem;
+  left: 1rem;
+}
+
+@media (min-width: 768px) {
+  .coord {
+    display: block;
+  }
+
+  .coord--tl {
+    top: 5rem;
+    left: 1.5rem;
+  }
+
+  .coord--br {
+    display: block;
+    bottom: 2rem;
+    right: 1.5rem;
+  }
+}
+
+
+/* ----------------------------------------------------------------
+   7. BOTONES
+---------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.95rem 1.6rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform 0.25s var(--ease), background 0.25s var(--ease), border-color 0.25s var(--ease);
+  white-space: nowrap;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn--full {
+  width: 100%;
+}
+
+.btn--primary {
+  background: var(--color-primary);
+  color: var(--color-text);
+  border-color: var(--color-accent);
+}
+
+.btn--primary:hover {
+  background: var(--color-accent);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--color-text);
+  border-color: var(--color-line-30);
+}
+
+.btn--ghost:hover {
+  border-color: var(--color-soft);
+  color: var(--color-soft);
+}
+
+.btn--small {
+  padding: 0.6rem 1.1rem;
+  font-size: 0.75rem;
+}
+
+/* Efecto "escaneo láser" en hover: una franja de luz cruza el botón */
+.btn--laser {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn--laser::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(242, 236, 219, 0.55), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s var(--ease);
+}
+
+.btn--laser:hover::after {
+  left: 120%;
+}
+
+
+/* ----------------------------------------------------------------
+   8. NAVBAR
+---------------------------------------------------------------- */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-line-15);
+}
+
+.navbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.logo__icon {
+  height: 15px;
+  position: relative;
+  top: 3px;
+}
+
+.logo {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.logo__mark {
+  color: var(--color-soft);
+  font-size: 0.9rem;
+  transform: rotate(0deg);
+}
+
+.logo__text {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+}
+
+.logo__tag {
+  display: none;
+  /* se muestra recién en desktop, ver media query */
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--color-text-40);
+  letter-spacing: 0.08em;
+}
+
+.nav-desktop {
+  display: none;
+}
+
+/* mobile-first: nav de escritorio oculta por defecto */
+
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.nav-cta {
+  display: none;
+}
+
+/* el CTA del navbar solo aparece en desktop, en mobile está en el menú */
+
+/* Botón hamburguesa */
+.nav-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.nav-toggle__bar {
+  width: 100%;
+  height: 1.5px;
+  background: var(--color-text);
+  transition: transform 0.25s var(--ease), opacity 0.25s var(--ease);
+}
+
+/* Estado abierto: la hamburguesa se transforma en una "X" */
+.nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(1) {
+  transform: translateY(6.5px) rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(3) {
+  transform: translateY(-6.5px) rotate(-45deg);
+}
+
+/* Menú mobile: panel desplegable debajo del navbar */
+.nav-mobile {
+  display: flex;
+  flex-direction: column;
+  max-height: 0;
+  overflow: hidden;
+  background: var(--color-bg);
+  border-bottom: 1px solid transparent;
+  transition: max-height 0.35s var(--ease), border-color 0.35s var(--ease);
+}
+
+.nav-mobile.is-open {
+  max-height: 28rem;
+  border-color: var(--color-line-15);
+}
+
+.nav-mobile a {
+  padding: 0.9rem 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--color-line-15);
+}
+
+.nav-mobile__cta {
+  margin: 1rem 1.25rem 1.25rem;
+  text-align: center;
+}
+
+@media (min-width: 1024px) {
+  .logo__tag {
+    display: block;
+  }
+
+  .nav-desktop {
+    display: flex;
+    gap: 2rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .nav-desktop a {
+    position: relative;
+    padding-block: 0.25rem;
+    color: var(--color-text-60);
+    transition: color 0.2s var(--ease);
+  }
+
+  .nav-desktop a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 1px;
+    background: var(--color-soft);
+    transition: width 0.25s var(--ease);
+  }
+
+  .nav-desktop a:hover {
+    color: var(--color-text);
+  }
+
+  .nav-desktop a:hover::after {
+    width: 100%;
+  }
+
+  .nav-cta {
+    display: inline-flex;
+  }
+
+  .nav-toggle,
+  .nav-mobile {
+    display: none;
+  }
+
+  /* en desktop no hace falta el menú mobile */
+}
+
+
+/* ----------------------------------------------------------------
+   9. SECCIÓN 1 — HERO
+---------------------------------------------------------------- */
+.hero {
+  position: relative;
+  min-height: calc(100svh - 64px);
+  display: flex;
+  align-items: center;
+  padding-block: 3rem 4rem;
+  overflow: visible;
+}
+
+/* Contenedor del video de fondo del hero */
+.hero__bg {
+  position: absolute;
+  inset: 0 0 -2px 0; /* ← extiende el bg 2px hacia abajo */
+  z-index: 0;
+  mask-image: none; /* ← sacamos el mask que interfiere */
+}
+
+.hero__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.hero__video--desktop {
+  display: none;
+}
+
+/* Overlay negro semitransparente encima de la imagen */
+/* Cambiá el 0.6 hasta que el texto quede cómodo para leer */
+.hero__bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.6) 60%,
+    var(--color-bg, #0e0b18) 100%
+  );
+  z-index: 1;
+}
+
+/* Overlay más transparente para el hero del index */
+.hero--index .hero__bg::after {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.hero__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+}
+
+.hero__bg .img-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  border: none;
+  background: rgba(49, 48, 155, 0.12);
+}
+
+/* Video desktop a partir de 768px */
+@media (min-width: 768px) {
+  .hero__video--mobile {
+    display: none;
+  }
+
+  .hero__video--desktop {
+    display: block;
+  }
+
+  .hero__image {
+    object-position: center 35%;
+  }
+}
+
+.hero__content {
+  position: relative;
+  z-index: 2;
+  max-width: 760px;
+  margin-top: 45vh;
+}
+
+/* ----------------------------------------------------------------
+   LÍNEA DE TIEMPO — SECCIÓN ENTRENAMIENTO
+   Mobile-first: vertical stack. Desktop (>=768px): horizontal timeline
+---------------------------------------------------------------- */
+.timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 1rem;
+}
+
+.timeline__track {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(3rem, 3rem) 1fr;
+  column-gap: 1rem;
+  padding-left: 0;
+  align-items: flex-start;
+}
+
+.timeline__line {
+  position: absolute;
+  left: 1.5rem;
+  top: 0.75rem;
+  bottom: 0.75rem;
+  width: 2px;
+  background: var(--color-line-15);
+  border-radius: 2px;
+  z-index: 1;
+}
+
+.timeline__points {
+  position: relative;
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+  padding-top: 0.75rem;
+  z-index: 2;
+  align-items: center;
+}
+
+.timeline__point {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-soft);
+  box-shadow: 0 0 0 4px var(--color-primary-40);
+  margin: 0;
+}
+
+.timeline__items {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+  margin-top: 0;
+  padding-top: 0.75rem;
+}
+
+.timeline__item {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  position: relative;
+  padding-left: 0;
+}
+
+.timeline__item::before {
+  content: '';
+  position: absolute;
+  left: -2.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.5rem;
+  height: 2px;
+  background: var(--color-line-15);
+}
+
+.timeline__item .img-frame {
+  width: 86px;
+  height: 86px;
+  aspect-ratio: 1/1;
+}
+
+.timeline__end {
+  grid-column: 1 / -1;
+  margin-top: 2rem;
+  padding-left: 0;
+  display: flex;
+  justify-content: center;
+  justify-self: center;
+}
+
+.timeline__text {
+  font-family: var(--font-mono);
+  color: var(--color-text-60);
+  font-size: 0.95rem;
+}
+
+@media (max-width: 767px) {
+  .timeline__track {
+    padding-bottom: 14rem;
+  }
+
+  .timeline__line {
+    top: 7.5rem;
+    bottom: auto;
+    height: 42rem;
+  }
+
+  .timeline__points {
+    top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 54rem;
+    padding: 6rem 0;
+    gap: 0;
+  }
+
+  .timeline__items {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-top: 1.5rem;
+  }
+
+  .timeline__item {
+    min-height: 12rem;
+    align-items: center;
+    padding-left: 0.5rem;
+  }
+
+  .timeline__item .img-frame {
+    width: 200px;
+    height: 200px;
+  }
+
+  .timeline__text {
+    font-size: 0.8rem;
+    line-height: 1.4;
+    max-width: 12rem;
+  }
+
+  .timeline__text span {
+    display: block;
+  }
+
+  .timeline__text span:first-child {
+    margin-bottom: 0.35rem;
+  }
+
+  .timeline__item::before {
+    left: -1.5rem;
+    width: 1.5rem;
+  }
+
+  .timeline__end {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 1rem;
+    margin: 0;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 768px) {
+  .timeline__track {
+    flex-direction: row;
+    align-items: flex-start;
+    padding-left: 1rem;
+  }
+
+  .timeline__line {
+    left: 1rem;
+    /* cortar la línea antes del trofeo (trofeo aprox. 120px + gap 20px) */
+    right: calc(1rem + 140px);
+    top: 1.2rem;
+    bottom: auto;
+    height: 2px;
+    width: auto;
+    transform: none;
+  }
+
+  .timeline__points {
+    position: absolute;
+    left: 1rem;
+    /* coincidir con el recorte de la línea (no llega hasta el trofeo) */
+    right: calc(1rem + 140px);
+    /* usar grid para alinear los puntos con las columnas de las imágenes */
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+    justify-items: center;
+    z-index: 3;
+    gap: 0;
+    height: 0;
+  }
+
+  .timeline__point {
+    margin: 0;
+    transform: none;
+    box-shadow: none;
+    justify-self: center;
+  }
+
+  .timeline__end {
+    position: absolute;
+    right: 1rem;
+    /* subir mucho más el trofeo para centrarlo con la línea */
+    top: 0.35rem;
+    transform: translateY(-50%);
+    margin: 0;
+    padding-left: 0;
+  }
+
+  .timeline__items {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    /* sitúa las miniaturas bajo la línea horizontal */
+    margin-top: 3.5rem;
+    align-items: start;
+    /* asegurar que las columnas estén alineadas con los puntos (mismos left/right) */
+    width: calc(100% - 140px - 2rem);
+    margin-left: 1rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .timeline__item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    padding-top: 0.25rem;
+  }
+
+  .timeline__item .img-frame {
+    width: 200px;
+    height: 200px;
+    z-index: 2;
+  }
+
+  .timeline__text {
+    margin-top: 0.6rem;
+  }
+
+  /* Conector vertical desde cada punto de la línea hasta la imagen (desktop) */
+  .timeline__item::before {
+    content: '';
+    position: absolute;
+    /* situar el conector para que toque la línea horizontal (50% vertical) */
+    top: -3.6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+    height: 3.6rem;
+    background: var(--color-line-15);
+    z-index: 0;
+  }
+
+  /* Asegurar que los puntos queden visibles por encima de los conectores */
+  .timeline__point {
+    z-index: 3;
+    background: var(--color-soft);
+  }
+}
+
+.hero__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.1rem, 8vw, 4rem);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15em;
+  margin-bottom: 1.5rem;
+}
+
+.hero__subtitle {
+  font-size: 1.05rem;
+  color: var(--color-text-60);
+  max-width: 56ch;
+  margin-bottom: 2.25rem;
+}
+
+.hero__actions {
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
+  align-items: flex-start;
+  margin-bottom: 2.75rem;
+}
+
+.hero__actions .btn {
+  flex: 1;
+}
+
+.hero__note {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-text-40);
+}
+
+/* Ticker de telemetría tipo HUD */
+.telemetry-ticker {
+  border: 1px solid var(--color-line-30);
+  background: rgba(49, 48, 155, 0.08);
+  padding: 1rem 1.1rem;
+  max-width: 460px;
+}
+
+.telemetry-ticker__label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-soft);
+  margin-bottom: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  /* Reglas específicas para garantizar posición y tamaño del trofeo */
+  .entrenamiento .timeline__end {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(calc(-50% - 6px));
+    margin: 0;
+    padding-left: 0;
+    z-index: 5;
+  }
+
+  .entrenamiento .timeline__trophy img {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+  }
+
+  .entrenamiento .timeline__item::before {
+    background: var(--color-line-15);
+    width: 3px;
+    height: 3.6rem;
+  }
+
+  .entrenamiento .timeline__point {
+    z-index: 6;
+  }
+
+  .entrenamiento .timeline__end {
+    top: 1.05rem;
+    transform: translateY(-50%);
+  }
+}
+
+.telemetry-ticker__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.telemetry-ticker__item dt {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--color-text-40);
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+
+.telemetry-ticker__item dd {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* Indicador de scroll, fijo al pie del hero */
+.scroll-cue {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--color-text-40);
+  z-index: 2;
+}
+
+.scroll-cue__line {
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(var(--color-line), transparent);
+  animation: scroll-cue-move 1.8s var(--ease) infinite;
+}
+
+@keyframes scroll-cue-move {
+  0% {
+    transform: scaleY(0.3);
+    transform-origin: top;
+  }
+
+  50% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+
+  100% {
+    transform: scaleY(0.3);
+    transform-origin: bottom;
+  }
+}
+
+
+/* ----------------------------------------------------------------
+   10. SECCIÓN 2 — MANIFIESTO
+---------------------------------------------------------------- */
+.manifesto__grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: 1fr;
+  /* mobile: columnas apiladas */
+}
+
+.manifesto__col {
+  border: 1px solid var(--color-line-30);
+  padding: 1.75rem;
+  position: relative;
+}
+
+.manifesto__col h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  margin-bottom: 1.25rem;
+}
+
+.manifesto__col ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.manifesto__col li {
+  display: flex;
+  gap: 0.6rem;
+  font-size: 0.95rem;
+  color: var(--color-text-60);
+  line-height: 1.5;
+}
+
+.manifesto__col li::before {
+  content: "";
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  margin-top: 0.5em;
+  background: var(--color-line);
+}
+
+.manifesto__col--yes {
+  border-color: var(--color-accent);
+  background: rgba(85, 85, 210, 0.06);
+}
+
+.manifesto__col--yes h3 {
+  color: var(--color-soft);
+}
+
+.manifesto__col--yes [data-lucide] {
+  color: var(--color-soft);
+  width: 20px;
+  height: 20px;
+}
+
+.manifesto__col--no {
+  opacity: 0.85;
+}
+
+.manifesto__col--no [data-lucide] {
+  color: var(--color-text-40);
+  width: 20px;
+  height: 20px;
+}
+
+@media (min-width: 768px) {
+  .manifesto__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────
+   SECCIÓN INTRODUCCIÓN (detalle.html) — Estilo especial
+──────────────────────────────────────────────────────────────── */
+#introduccion .manifesto__grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: 1fr;
+  grid-template-areas: "foto" "texto";
+}
+
+#introduccion .manifesto__col {
+  grid-area: texto;
+  padding: 2rem;
+}
+
+#introduccion .manifesto__col p {
+  color: var(--color-white);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+#introduccion .manifesto__col .text-ultra-bold {
+  font-weight: 600;
+  color: var(--color-soft);
+  font-size: 1.1rem;
+}
+
+#introduccion .img-frame {
+  grid-area: foto;
+  background-image: url("assets/img/pilotom.png");
+  background-size: cover;
+  background-position: center 45%;
+  aspect-ratio: 4 / 3;
+}
+
+@media (min-width: 768px) {
+  #introduccion .manifesto__grid {
+    grid-template-columns: 1fr;
+    grid-template-areas: "foto" "texto";
+    gap: 2rem;
+  }
+
+  #introduccion .img-frame {
+    background-image: url("assets/img/pilotod.png");
+    background-position: center center;
+    aspect-ratio: 16 / 7;
+    border: 1px solid var(--color-line-30);
+  }
+
+  #introduccion .manifesto__col {
+    padding: 2rem;
+  }
+}
+
+
+/* ----------------------------------------------------------------
+   11. SECCIÓN 3 — TELEMETRÍA / DASHBOARD (elemento firma de la página)
+---------------------------------------------------------------- */
+.telemetry {
+  background: linear-gradient(180deg, transparent, rgba(49, 48, 155, 0.08));
+}
+
+.dashboard {
+  position: relative;
+  border: 1px solid var(--color-line-30);
+  background: rgba(0, 0, 0, 0.6);
+  padding: 1.25rem 1.25rem 1.5rem;
+  z-index: 1;
+}
+
+.dashboard__head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  color: var(--color-text-40);
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--color-line-15);
+  flex-wrap: wrap;
+}
+
+.dashboard__dot {
+  width: 7px;
+  height: 7px;
+  background: var(--color-soft);
+  border-radius: 50%;
+  animation: pulse-dot 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.dashboard__live {
+  margin-left: auto;
+  color: var(--color-soft);
+  border: 1px solid var(--color-soft);
+  padding: 0.1rem 0.4rem;
+}
+
+.channel {
+  margin-bottom: 1.5rem;
+}
+
+.channel:last-of-type {
+  margin-bottom: 0.75rem;
+}
+
+.channel__label {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--color-text-60);
+  margin-bottom: 0.4rem;
+}
+
+.channel__value {
+  color: var(--color-soft);
+  font-weight: 600;
+}
+
+.channel__chart {
+  width: 100%;
+  height: 70px;
+  display: block;
+}
+
+.chart-grid line {
+  stroke: var(--color-line-15);
+  stroke-width: 1;
+}
+
+.chart-path {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  /* stroke-dasharray / dashoffset se calculan e inicializan en JS
+     a partir del largo real del path, para animar el "dibujado" */
+}
+
+.chart-path--brake {
+  stroke: var(--color-soft);
+}
+
+.chart-path--throttle {
+  stroke: var(--color-accent);
+}
+
+.chart-path--steering {
+  stroke: var(--color-line);
+}
+
+/* Telemetry compare overlay: reveal final trace when dashboard toggles active */
+.chart-compare {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+.chart-compare svg {
+  display: block;
+  width: 100%;
+  height: 90px;
+}
+.chart-compare__novice {
+  position: relative;
+  z-index: 1;
+}
+.chart-compare__final {
+  position: absolute;
+  inset: 0;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  /* oculto por la derecha (revelado horizontal siguiendo el playhead) */
+  clip-path: inset(0 100% 0 0);
+  -webkit-clip-path: inset(0 100% 0 0);
+  will-change: clip-path;
+  pointer-events: none;
+}
+
+/* Línea vertical que recorre el panel simulando un cursor "en vivo" */
+.dashboard__playhead {
+  position: absolute;
+  top: 3.6rem;
+  bottom: 2.4rem;
+  width: 1px;
+  background: var(--color-text-40);
+  left: 1.25rem;
+  opacity: 0;
+}
+
+.dashboard.is-active .dashboard__playhead {
+  opacity: 1;
+  /* Animación gestionada por JS para sincronizar con el revelado */
+  animation: none !important;
+}
+
+@keyframes playhead-sweep {
+  0% {
+    left: 1.25rem;
+  }
+
+  100% {
+    left: calc(100% - 1.25rem);
+  }
+}
+
+.dashboard__caption {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-text-40);
+  margin-top: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .channel__chart {
+    height: 90px;
+  }
+}
+
+
+/* ----------------------------------------------------------------
+   12. SECCIÓN 4 — HARDWARE / INGENIERÍA
+---------------------------------------------------------------- */
+.hardware__grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+.hw-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  margin: 1.1rem 0 0.4rem;
+}
+
+.hw-card p {
+  color: var(--color-text-60);
+  font-size: 0.92rem;
+  margin-bottom: 0.5rem;
+}
+
+.hw-card__spec {
+  font-family: var(--font-mono);
+  color: var(--color-text);
+  font-size: 0.85rem !important;
+}
+
+.hw-card__num {
+  color: var(--color-soft);
+  font-weight: 600;
+}
+
+.hw-card__vs {
+  font-size: 0.8rem !important;
+  color: var(--color-text-40) !important;
+  border-left: 2px solid var(--color-line-30);
+  padding-left: 0.6rem;
+  margin-top: 0.75rem !important;
+}
+
+@media (min-width: 768px) {
+  .hardware__grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+}
+
+
+
+/* ----------------------------------------------------------------
+   Nueva Estructura de Consola de Hardware (Interactiva)
+---------------------------------------------------------------- */
+.hw-console {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  background: #000000;
+  border: 1px solid var(--color-primary);
+  padding: 1.25rem;
+}
+
+@media (min-width: 1024px) {
+  .hw-console {
+    grid-template-columns: 4fr 5fr 3fr;
+    gap: 2rem;
+    padding: 2rem;
+  }
+}
+
+/* Selector Izquierdo (Menú) */
+.hw-console__menu {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.hw-console__menu-title {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-accent);
+  letter-spacing: 0.08em;
+  margin-bottom: 0.25rem;
+}
+
+.hw-console__btn {
+  text-align: left;
+  padding: 1rem;
+  border: 1px solid transparent;
+  border-bottom: 1px solid var(--color-line-15);
+  cursor: pointer;
+  position: relative;
+  transition: background 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+
+.hw-console__btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background: transparent;
+}
+
+.hw-console__btn:hover {
+  background: var(--color-line-15);
+}
+
+.hw-console__btn.active {
+  background: rgba(49, 48, 155, 0.2);
+  border: 1px solid var(--color-primary);
+}
+
+.hw-console__btn.active::before {
+  background: var(--color-soft);
+}
+
+.hw-console__btn-sub {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--color-line);
+  margin-bottom: 0.15rem;
+}
+
+.hw-console__btn-main {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text-60);
+}
+
+.hw-console__btn.active .hw-console__btn-main {
+  color: var(--color-text);
+}
+
+/* Visualizador Central */
+.hw-console__display {
+  background: rgba(49, 48, 155, 0.05);
+  border: 1px solid var(--color-line-15);
+  padding: 1rem;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+
+.hw-console__corner {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border: 1px solid var(--color-line);
+}
+
+.hw-console__corner--tl {
+  top: 0;
+  left: 0;
+  border-right: none;
+  border-bottom: none;
+}
+
+.hw-console__corner--tr {
+  top: 0;
+  right: 0;
+  border-left: none;
+  border-bottom: none;
+}
+
+.hw-console__corner--bl {
+  bottom: 0;
+  left: 0;
+  border-right: none;
+  border-top: none;
+}
+
+.hw-console__corner--br {
+  bottom: 0;
+  right: 0;
+  border-left: none;
+  border-top: none;
+}
+
+.hw-console__feed-tag {
+  align-self: flex-end;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--color-line);
+  letter-spacing: 0.1em;
+}
+
+.hw-console__img-wrapper {
+  margin: auto;
+  border: none !important;
+  background: transparent !important;
+}
+
+.hw-console__img-wrapper img {
+  max-height: 220px;
+  object-contain: contain;
+  filter: brightness(1.1) drop-shadow(0 0 10px rgba(85, 85, 210, 0.3));
+  transition: opacity 0.2s var(--ease);
+}
+
+.hw-console__coords {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--color-accent);
+}
+
+/* Panel de Detalles (Derecho) */
+.hw-console__details {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.hw-console__telemetry-tag {
+  display: inline-block;
+  padding: 0.15rem 0.4rem;
+  background: rgba(85, 85, 210, 0.15);
+  border: 1px solid var(--color-accent);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--color-soft);
+  margin-bottom: 0.75rem;
+}
+
+.hw-console__title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.hw-console__spec {
+  font-family: var(--font-mono);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-soft);
+  margin-bottom: 0.75rem;
+}
+
+.hw-console__spec-unit {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--color-text-40);
+  margin-left: 0.25rem;
+}
+
+.hw-console__desc {
+  font-size: 0.9rem;
+  color: var(--color-text-60);
+  line-height: 1.5;
+}
+
+/* VS Bloque */
+.hw-console__vs-box {
+  border-top: 1px solid var(--color-line-30);
+  padding-top: 1rem;
+}
+
+.hw-console__vs-title {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: #ff6b6b;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.4rem;
+  display: flex;
+  align-items: center;
+}
+
+.hw-console__pulse-dot {
+  width: 6px;
+  height: 6px;
+  background: #ff4b4b;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  animation: pulse 1.5s infinite;
+}
+
+.hw-console__vs-text {
+  font-size: 0.85rem;
+  color: var(--color-text-40);
+  font-style: italic;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0.9);
+    opacity: 0.6;
+  }
+}
+
+
+/* ----------------------------------------------------------------
+   13. PLACEHOLDERS DE IMAGEN (.img-frame)
+   Componente reutilizable: muestra un patrón tipo blueprint con
+   una etiqueta indicando qué archivo reemplazar, hasta que la
+   imagen real cargue correctamente (controlado desde script.js).
+---------------------------------------------------------------- */
+.img-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px dashed var(--color-line-30);
+  background:
+    repeating-linear-gradient(45deg, var(--color-line-15) 0 1px, transparent 1px 14px),
+    rgba(49, 48, 155, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-40);
+}
+
+.img-frame--portrait {
+  aspect-ratio: 3 / 4;
+}
+
+.img-frame--circle {
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  width: 64px;
+  margin-inline: auto;
+}
+
+.img-frame img,
+.img-frame video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  /* invisible mientras no se confirme que cargó (ver JS) */
+  transition: opacity 0.4s var(--ease);
+}
+
+.img-frame.is-loaded img,
+.img-frame.is-loaded video {
+  opacity: 1;
+}
+
+/* Cuando la imagen carga bien, el patrón de fondo y el ícono se ocultan */
+.img-frame.is-loaded {
+  background: none;
+  border-style: solid;
+}
+
+.img-frame.is-loaded .img-frame__icon,
+.img-frame.is-loaded .img-frame__label {
+  display: none;
+}
+
+.img-frame__icon {
+  opacity: 0.5;
+}
+
+.img-frame__icon [data-lucide] {
+  width: 22px;
+  height: 22px;
+}
+
+/* Etiqueta con el nombre de archivo sugerido.
+   El texto se toma del atributo "data-label" del .img-frame y se
+   inyecta en este span vía script.js (más confiable que attr() de CSS,
+   que no puede leer un atributo de un elemento ancestro). */
+.img-frame__label {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  right: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  text-align: center;
+  color: var(--color-text-40);
+}
+
+/* En los avatares circulares (64px) no entra texto legible: solo ícono */
+.img-frame--circle .img-frame__label {
+  display: none;
+}
+
+
+/* ----------------------------------------------------------------
+   14. SECCIÓN 5 — PROGRAMAS / PRICING
+---------------------------------------------------------------- */
+.programs__grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+.plan-card {
+  border: 1px solid var(--color-line-30);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.plan-card__code {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-text-40);
+  margin-bottom: 0.75rem;
+}
+
+.plan-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  margin-bottom: 0.4rem;
+}
+
+.plan-card__desc {
+  color: var(--color-text-60);
+  font-size: 0.9rem;
+  margin-bottom: 1.25rem;
+}
+
+.plan-card__price {
+  font-family: var(--font-mono);
+  font-size: 1.7rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.plan-card__price span {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--color-text-40);
+  text-transform: uppercase;
+}
+
+.plan-card__media {
+  margin-bottom: 1.25rem;
+  flex-grow: 1;
+}
+
+.plan-card__image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+  border: 1px solid var(--color-line-30);
+}
+
+.plan-card--featured {
+  border-color: var(--color-soft);
+  background: rgba(85, 85, 210, 0.1);
+}
+
+.plan-card__badge {
+  position: absolute;
+  top: -0.7rem;
+  left: 1.75rem;
+  background: var(--color-soft);
+  color: var(--color-bg);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.6rem;
+}
+
+#modulos .container {
+  overflow: visible;
+}
+
+@media (min-width: 1024px) {
+  #modulos .container {
+    padding-inline: 0;
+  }
+}
+
+
+.programs__carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  gap: 1rem;
+  padding-inline: 1.25rem;
+  padding-right: 2.5rem;
+  padding-bottom: 1rem;
+  scrollbar-width: none;
+}
+
+.programs__carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.programs__carousel .plan-card {
+  width: calc(100vw - 4rem);
+  scroll-snap-align: center;
+  flex-shrink: 0;
+}
+
+@media (min-width: 1024px) {
+  .programs__carousel .plan-card {
+    width: unset;
+    min-width: unset;
+    scroll-snap-align: unset;
+    grid-column: span 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .programs__carousel {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1.75rem;
+    overflow-x: visible;
+    padding-inline: 0;
+  }
+
+  .programs__carousel .plan-card {
+    min-width: unset;
+    grid-column: span 2;
+  }
+
+  .programs__carousel .plan-card:nth-child(4) {
+    grid-column: 2 / 4;
+  }
+
+  .programs__carousel .plan-card:nth-child(5) {
+    grid-column: 4 / 6;
+  }
+}
+
+
+
+/* ----------------------------------------------------------------
+   15. SECCIÓN 6 — FACTOR HUMANO
+---------------------------------------------------------------- */
+.human-factor__grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1fr;
+}
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.quotes {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.quote {
+  border-left: 2px solid var(--color-soft);
+  padding-left: 1.1rem;
+}
+
+.quote p {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
+}
+
+.quote footer {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-text-40);
+}
+
+@media (min-width: 768px) {
+  .human-factor__grid {
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+  }
+}
+
+
+/* ----------------------------------------------------------------
+   DETALLE TÉCNICO (Image Compare)
+---------------------------------------------------------------- */
+.img-compare {
+  --pos: 50%;
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 3rem auto 0;
+  border: 1px solid var(--color-line-30);
+  background: var(--color-bg);
+  /* Asegura que el contenido no se desborde y mantenga la proporción */
+  display: flex;
+}
+
+.img-compare__bg,
+.img-compare__fg {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+.img-compare__fg {
+  position: absolute;
+  inset: 0;
+  /* clip-path usa la variable CSS que controla el input range */
+  clip-path: polygon(0 0, var(--pos) 0, var(--pos) 100%, 0 100%);
+}
+
+.img-compare__handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--pos);
+  width: 2px;
+  background: var(--color-accent);
+  transform: translateX(-50%);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.img-compare__handle-btn {
+  width: 48px;
+  height: 48px;
+  background: var(--color-bg);
+  border: 2px solid var(--color-accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-accent);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.img-compare__slider {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: ew-resize;
+  margin: 0;
+  z-index: 10;
+  /* para Safari/iOS para asegurar que se pueda arrastrar todo el div */
+  -webkit-appearance: none;
+  background: transparent;
+}
+
+
+/* ----------------------------------------------------------------
+   VIDEO SCROLL-DRIVEN
+   El wrapper alto "contiene" el scroll. El sticky hace que el
+   video quede clavado en pantalla mientras el usuario recorre
+   toda la altura del wrapper.
+---------------------------------------------------------------- */
+.scroll-video-wrapper {
+  height: 300vh;
+  position: relative;
+}
+
+.scroll-video-sticky {
+  position: sticky;
+  top: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  overflow: hidden;
+  background: var(--color-bg);
+}
+
+.scroll-video__header {
+  text-align: left;
+  margin-bottom: 1.5rem;
+  z-index: 2;
+}
+
+.scroll-video__header .eyebrow {
+  margin-bottom: 0.75rem;
+}
+
+.scroll-video {
+  width: 100%;
+  max-width: 900px;
+  max-height: 70vh;
+  object-fit: cover;
+  display: block;
+  margin-inline: auto;
+}
+
+/* ----------------------------------------------------------------
+   16. SECCIÓN 7 — RESULTADOS / CARRUSEL
+---------------------------------------------------------------- */
+.results .container {
+  margin-bottom: 0.5rem;
+}
+
+.carousel {
+  position: relative;
+}
+
+.carousel__track {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 0 1.25rem 1.5rem;
+  /* oculta la barra de scroll visualmente, sigue siendo accesible por touch/drag */
+  scrollbar-width: none;
+}
+
+.carousel__track::-webkit-scrollbar {
+  display: none;
+}
+
+.result-card {
+  scroll-snap-align: start;
+  flex: 0 0 240px;
+  border: 1px solid var(--color-line-30);
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.result-card__track {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--color-text-40);
+  margin: 0.85rem 0 0.4rem;
+}
+
+.result-card__delta {
+  font-family: var(--font-display);
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: var(--color-soft);
+  margin-bottom: 0.4rem;
+}
+
+.result-card__name {
+  font-size: 0.82rem;
+  color: var(--color-text-60);
+}
+
+.carousel__controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.carousel__btn {
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--color-line-30);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+
+.carousel__btn:hover {
+  border-color: var(--color-soft);
+  color: var(--color-soft);
+}
+
+.carousel__btn [data-lucide] {
+  width: 18px;
+  height: 18px;
+}
+
+@media (min-width: 768px) {
+  .result-card {
+    flex-basis: 280px;
+  }
+}
+
+
+/* ----------------------------------------------------------------
+   17. SECCIÓN 8 — APLICAR / FOOTER CTA
+---------------------------------------------------------------- */
+.apply {
+  background: rgba(49, 48, 155, 0.08);
+}
+
+.apply__inner {
+  display: grid;
+  gap: 2.5rem;
+  grid-template-columns: 1fr;
+  position: relative;
+  z-index: 1;
+}
+
+.apply__bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-top: 1.5rem;
+}
+
+.apply__bullets li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  color: var(--color-text-60);
+}
+
+.apply__bullets [data-lucide] {
+  width: 16px;
+  height: 16px;
+  color: var(--color-soft);
+}
+
+.apply__form {
+  border: 1px solid var(--color-line-30);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-row--split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-row label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-40);
+}
+
+.form-row input,
+.form-row select,
+.form-row textarea {
+  border: 1px solid var(--color-line-30);
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.75rem 0.85rem;
+  font-size: 0.92rem;
+  transition: border-color 0.2s var(--ease);
+}
+
+.form-row input::placeholder,
+.form-row textarea::placeholder {
+  color: var(--color-text-40);
+}
+
+.form-row input:focus,
+.form-row select:focus,
+.form-row textarea:focus {
+  border-color: var(--color-soft);
+}
+
+.form-row select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f2ecdb' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 16px;
+}
+
+.form-row textarea {
+  resize: vertical;
+  font-family: var(--font-body);
+}
+
+.apply__success {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--color-soft);
+  border: 1px solid var(--color-soft);
+  padding: 0.85rem;
+  text-align: center;
+}
+
+@media (min-width: 1024px) {
+  .apply__inner {
+    grid-template-columns: 0.9fr 1.1fr;
+    align-items: start;
+  }
+}
+
+
+/* ----------------------------------------------------------------
+   18. FOOTER
+---------------------------------------------------------------- */
+.site-footer {
+  border-top: 1px solid var(--color-line-15);
+  padding-block: 3rem 1.5rem;
+}
+
+.site-footer__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.site-footer__brand p {
+  color: var(--color-text-40);
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.site-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+.site-footer__links a {
+  color: var(--color-text-60);
+  transition: color 0.2s var(--ease);
+}
+
+.site-footer__links a:hover {
+  color: var(--color-soft);
+}
+
+.site-footer__social {
+  display: flex;
+  gap: 1rem;
+}
+
+.site-footer__social a {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--color-line-30);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+
+.site-footer__social a:hover {
+  border-color: var(--color-soft);
+  color: var(--color-soft);
+}
+
+.site-footer__social [data-lucide] {
+  width: 16px;
+  height: 16px;
+}
+
+.site-footer__legal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-line-15);
+  font-size: 0.75rem;
+  color: var(--color-text-40);
+}
+
+.site-footer__legal .mono {
+  font-family: var(--font-mono);
+}
+
+@media (min-width: 768px) {
+  .site-footer__inner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .site-footer__legal {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+
+/* ----------------------------------------------------------------
+   SECCIÓN — BENEFICIOS
+   Mobile-first: scroll horizontal con snap.
+   Desktop (≥768px): grilla 3×2 estática.
+---------------------------------------------------------------- */
+
+/* Título con span resaltado (estética blueprint del sitio) */
+.beneficios__highlight {
+  position: relative;
+  color: var(--color-soft);
+  /* rosa/lila del sistema */
+  white-space: nowrap;
+}
+
+/* subrayado eliminado */
+
+/* El header de beneficios no necesita el max-width del section__header genérico
+   para que el título quepa en una sola línea en desktop */
+.beneficios .section__header {
+  max-width: none;
+  white-space: nowrap;
+}
+
+/* ── Track (contenedor con scroll en mobile) ── */
+.beneficios__track {
+  display: flex;
+  gap: 1rem;
+  padding-inline: 0;
+  padding-bottom: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.beneficios__track::-webkit-scrollbar {
+  display: none;
+}
+
+/* Chrome/Safari */
+
+/* ── Tarjeta ── */
+.beneficios__card {
+  flex: 0 0 100vw;
+  /* una card = ancho completo de la ventana */
+  max-width: 100vw;
+  scroll-snap-align: center;
+  background: rgba(49, 48, 155, 0.08);
+  border: 1px solid var(--color-line-15);
+  padding: 2rem 2.5rem;
+  text-align: center;
+  position: relative;
+  transition: border-color 0.3s var(--ease), background 0.3s var(--ease),
+    transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  overflow: hidden;
+}
+
+/* Esquina decorativa tipo HUD (top-left) */
+.beneficios__card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  border-top: 1px solid var(--color-accent);
+  border-left: 1px solid var(--color-accent);
+  opacity: 0.6;
+  transition: opacity 0.3s var(--ease);
+}
+
+/* Brillo de hover: franja de luz suave */
+.beneficios__card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(85, 85, 210, 0.08), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s var(--ease);
+  pointer-events: none;
+}
+
+/* ── Hover effects (solo desktop) ── */
+@media (min-width: 768px) {
+  /* Hover eliminada en tarjetas de beneficios */
+}
+
+/* ── Ícono (sin cuadrado decorativo) ── */
+.beneficios__icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
+.beneficios__icon-wrap img,
+.beneficios__icon-wrap svg {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+}
+
+/* ── Título de la tarjeta ── */
+.beneficios__card-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+  margin-bottom: 0.6rem;
+  color: var(--color-text);
+  text-align: center;
+}
+
+/* ── Texto descriptivo ── */
+.beneficios__card-text {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--color-text-60);
+  text-align: center;
+}
+
+/* ── Dots de paginación (solo mobile) ── */
+.beneficios__dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 1.25rem;
+  padding-inline: 1.25rem;
+}
+
+.beneficios__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-line-30);
+  transition: background 0.3s var(--ease), transform 0.3s var(--ease);
+}
+
+.beneficios__dot.active {
+  background: var(--color-soft);
+  transform: scale(1.35);
+}
+
+
+/* ── Desktop: grilla 3 × 2 ── */
+@media (min-width: 768px) {
+
+  .beneficios__track {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    overflow: visible;
+    padding-inline: 0;
+    /* el container del padre ya maneja el padding */
+    max-width: var(--container-w);
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+    padding-bottom: 0;
+  }
+
+  .beneficios__card {
+    flex: unset;
+    max-width: none;
+    scroll-snap-align: unset;
+  }
+
+  /* Oculta dots en desktop (solo sirven en mobile) */
+  .beneficios__dots {
+    display: none;
+  }
+}
+
+
+.resultados__stats {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  margin-top: 3rem;
+}
+
+.resultados__stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
+}
+
+.resultados__num {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 700;
+  color: var(--color-soft);
+  line-height: 1;
+}
+
+.resultados__label {
+  font-size: 0.85rem;
+  color: var(--color-white);
+  line-height: 1.5;
+  max-width: 20ch;
+}
+
+@media (min-width: 768px) {
+  .resultados__stats {
+    flex-direction: row;
+    gap: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .programs__otros {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+    overflow-x: visible;
+  }
+
+  .programs__otros .plan-card {
+    width: unset;
+    min-width: unset;
+    scroll-snap-align: unset;
+  }
+}
